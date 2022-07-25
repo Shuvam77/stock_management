@@ -1,0 +1,9 @@
+<h1>Items</h1>
+<h2>{{title}}</h2>
+<ul>
+{% for item in stock_list %}
+    <li>{{ item.category }} - {{ item.item_name }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
