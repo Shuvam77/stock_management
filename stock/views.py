@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
+from stock.forms import StockForm
 
 from stock.models import Stock
-
 # Create your views here.
 
 
@@ -21,6 +22,17 @@ class ListItem(ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = "List of Stock Items"
         return context
+
+
+class AddItem(CreateView):
+    form_class = StockForm
+    model = Stock
+    template_name = 'add_item.html'
+    success_url= reverse_lazy('stock:list_items')
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
 
 
 
