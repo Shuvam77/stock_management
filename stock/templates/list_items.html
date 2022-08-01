@@ -6,6 +6,12 @@
 
 <div class="container">
     <div class="header">{{title}}</div>
+    {% if not stock_list %}
+
+    <p>No articles added. <a href="{% url 'stock:add_item' %}">Add some articles!</a></p>
+
+    {% else %}
+    
     <div class="display_table">
         <table class="table table-hover">
             <thead>
@@ -24,12 +30,13 @@
                     <td>{{ item.item_name }}</td>
                     <td>{{ item.quantity }}</td>
                 </tr>
-                {% empty %}
-                <p>No articles added. <a href="{% url 'stock:add_item' %}">Add some articles!</a></p>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    {% endif %}
+
 </div>
 
 {% endblock %}
