@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView
-from stock.forms import StockForm
+from stock.forms import StockForm, StockSearchForm
+from django.db.models import Q
 
 from stock.models import Stock
 # Create your views here.
@@ -21,6 +22,7 @@ class ListItem(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "List of Stock Items"
+        context['tag'] = 'list'
         return context
 
 
@@ -33,6 +35,22 @@ class AddItem(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
+
+
+class SearchItems(ListView):
+    form_class = StockSearchForm
+    model = Stock
+    template_name = 'list_items.html'
+    context_object_name = 'stock_list'
+
+    def get_queryset(self):
+        query1 = self.request.GET.get('category')
+        query2 = self.request.GET.get('item_name')
+
+        queryset = Stock.objects.filter(
+            Q(category__icontains=query1), Q(item_name__icontains = query2)
+        )
+        return queryset
 
 
 

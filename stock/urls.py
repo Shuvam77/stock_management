@@ -7,5 +7,7 @@ urlpatterns = [
     path("", views.home, name="home"),
     path("list_items", views.ListItem.as_view(), name="list_items"),
     path("add_item", views.AddItem.as_view(), name="add_item"),
+    path('search/', views.SearchItems.as_view(), name='search_result'),
+
 
 ]

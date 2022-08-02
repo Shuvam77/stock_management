@@ -5,6 +5,8 @@
 
 
 <div class="container">
+    {% if tag == 'list' %}
+
     <div class="header">{{title}}</div>
     {% if not stock_list %}
 
@@ -36,7 +38,36 @@
     </div>
 
     {% endif %}
+    {% else %}
 
+    <div class="header">Search Result.</div>
+
+    <div class="display_table">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for item in stock_list %}
+                <tr>
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    
+    {% endif %}
 </div>
 
 {% endblock %}
