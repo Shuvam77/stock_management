@@ -12,13 +12,26 @@ Category = (
 
 class StockForm(forms.ModelForm):
 
-    category = forms.ChoiceField(choices=Category)
-    item_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}))
-    quantity = forms.IntegerField(max_value=50, widget=forms.NumberInput(attrs={'placeholder':'Quantity'}))
+    category = forms.ChoiceField(choices=Category, required=True)
+    item_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
+    quantity = forms.IntegerField(max_value=50, widget=forms.NumberInput(attrs={'placeholder':'Quantity'}), required=True)
 
     class Meta:
         model = Stock
         fields = ['category', 'item_name', 'quantity']
+
+    # Important in (forms.Form)
+    def clean(self):
+        cleaned_data = super(StockForm, self).clean()
+        category = cleaned_data.get('category')
+        item_name = cleaned_data.get('item_name')
+        quantity = cleaned_data.get('quantity')
+        if not category:
+            raise forms.ValidationError('This field is required')
+        elif not item_name:
+            raise forms.ValidationError('This field is required')
+        elif not quantity:
+            raise forms.ValidationError('This field is required')
 
 
 class StockSearchForm(forms.ModelForm):

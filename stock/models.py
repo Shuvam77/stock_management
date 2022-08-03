@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -19,3 +20,6 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.item_name
+
+    def get_absolute_url(self):
+        return reverse('stock:list_items')   
