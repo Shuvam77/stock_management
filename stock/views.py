@@ -1,5 +1,6 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import StockForm, StockSearchForm
 from django.db.models import Q
@@ -25,11 +26,6 @@ class ListItem(ListView):
         context['tag'] = 'list'
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     if request.method == 'POST':
-    #         Stock.objects.filter(pk=1).delete()
-    #     return redirect('stock:list_items')
-
 
 class AddItem(CreateView):
     form_class = StockForm
@@ -53,6 +49,11 @@ class DeleteItem(DeleteView):
     model= Stock
     template_name= 'stock_delete_confirm.html'
     success_url= reverse_lazy('stock:list_items')
+
+    # def delete(self, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     self.object.delete()
+    #     return HttpResponseRedirect(reverse('stock:list_items'))
 
 
 class SearchItems(ListView):

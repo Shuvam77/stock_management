@@ -38,9 +38,10 @@
                     <td><a class="btn btn-danger" href="{% url 'stock:delete_item' item.id %}">Delete</a></td>
 
                     {% comment %} <td>
-                        <button id="id_stock" class="btn btn-danger" 
+                        <button id="submit" type="button" class="btn btn-danger" 
                         data-toggle="modal" 
-                        data-target="#fm-modal-grid" 
+                        data-target="#fm-modal-grid"
+                        value="{{item.id}}"
                         href="#">
                         Delete
                         </button>
@@ -64,10 +65,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <form method="POST">
+                        <form method="POST" id="del_form">
                             {% csrf_token %}
-                            <p>Are you sure you want to delete this {{ stock_list }}?</p>
-                            <input type="submit" value="Confirm">
+                            <p>Are you sure you want to delete this?</p>
+                            <input id="del_submit" type="submit" value="Confirm">
                         </form>
                     </div>
             </div>
@@ -108,3 +109,7 @@
     {% endif %}
 </div>
 {% endblock %}
+
+{% comment %} {% block script %}
+    <script src="{% static 'js/stock.js' %}"></script>
+{% endblock  %} {% endcomment %}

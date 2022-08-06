@@ -1,14 +1,15 @@
 from django.contrib import admin
-from .models import Stock
+from .models import Stock, Category
 from .forms import StockForm
 
 # Register your models here.
 
 class StockFormAdmin(admin.ModelAdmin):
     list_display = ['category', 'item_name', 'quantity', 'created_by']
-    form = StockForm
+    # form = StockForm
     list_filter = ['category']
     search_fields = ['category', 'item_name'] 
 
 admin.site.register(Stock, StockFormAdmin)
+admin.site.register(Category)
 

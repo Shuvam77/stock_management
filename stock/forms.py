@@ -1,18 +1,18 @@
 from django import forms
 from .models import Stock
 
-Category = (
-    ('', 'Choose...'),
-    ('CHOCO', 'Chocolate'),
-    ('BEER', 'Beer'),
-    ('WHI', 'Whisky'),
-    ('CHIPS', 'Chips')
+# Category = (
+#     ('', 'Choose...'),
+#     ('CHOCO', 'Chocolate'),
+#     ('BEER', 'Beer'),
+#     ('WHI', 'Whisky'),
+#     ('CHIPS', 'Chips')
 
-)
+# )
 
 class StockForm(forms.ModelForm):
 
-    category = forms.ChoiceField(choices=Category, required=True)
+    category = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder':'Category'}), required=True)
     item_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
     quantity = forms.IntegerField(max_value=50, widget=forms.NumberInput(attrs={'placeholder':'Quantity'}), required=True)
 
