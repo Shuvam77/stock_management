@@ -16,7 +16,7 @@
     {% else %}
     <div class="display_button">
         <p><b>Add New:</b></p> 
-        <a class="btn btn-primary" type="button" data-toggle="modal" data-target="#fm-modal-grid">Add New</a>
+        <button id="create-category" class="btn btn-primary" type="button" name="button">Create Category</button>
     </div>
 
     <hr>
@@ -45,28 +45,9 @@
         </table>
     </div>
 
-    <div class="modal fade" id="fm-modal-grid" tabindex="-1"
-    role="dialog" aria-labelledBy="fm-modal-grid"
-    aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">ADD NEW CATEGORY</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                           <table>
-                               {{ form|crispy }}
-                           </table>
-                           <input type="submit" value="Save">
-                       </form>
-                    </div>
-            </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content"></div>
         </div>
     </div>
 
@@ -74,6 +55,20 @@
 
 </div>
 {% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+    
+        $("#create-category").modalForm({
+            formURL: "{% url 'stock:create_category' %}"
+        });    
+    });
+</script>
+{% endblock %}
+
+
+
 
 {% comment %} {% block script %}
     <script src="{% static 'js/stock.js' %}"></script>

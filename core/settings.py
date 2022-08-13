@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stock',
     'crispy_forms',
+    'bootstrap_modal_forms',
 ]
 
 MIDDLEWARE = [

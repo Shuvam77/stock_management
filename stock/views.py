@@ -1,9 +1,9 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from stock.forms import StockForm, StockSearchForm
+from stock.forms import CategoryForm, StockForm, StockSearchForm
 from django.db.models import Q
+from bootstrap_modal_forms.generic import BSModalCreateView
 
 from stock.models import Category, Stock
 # Create your views here.
@@ -73,11 +73,18 @@ class SearchItems(ListView):
 
 
 
-
 class ListCategory(ListView):
     model = Category
     paginate_by= 10
     context_object_name = 'categories'
     template_name = 'list_categories.html'
+
+
+class CreateCategory(BSModalCreateView):
+    form_class = CategoryForm
+    model = Category
+    template_name = 'create_category.html'
+    success_message = 'Success: Book was created.'
+    success_url= reverse_lazy('stock:list_category')
 
 

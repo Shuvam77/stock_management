@@ -1,5 +1,6 @@
 from django import forms
 from .models import Category, Stock
+from bootstrap_modal_forms.forms import BSModalModelForm
 
 # Category = (
 #     ('', 'Choose...'),
@@ -40,7 +41,7 @@ class StockSearchForm(forms.ModelForm):
         fields = ['category', 'item_name']
 
 
-class CategoryForm(forms.ModelForm):
+class CategoryForm(BSModalModelForm):
     name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
 
     class Meta:
