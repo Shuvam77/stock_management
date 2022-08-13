@@ -1,5 +1,5 @@
 from django import forms
-from .models import Stock
+from .models import Category, Stock
 
 # Category = (
 #     ('', 'Choose...'),
@@ -12,7 +12,7 @@ from .models import Stock
 
 class StockForm(forms.ModelForm):
 
-    category = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder':'Category'}), required=True)
+    category = forms.ModelChoiceField(required=True, queryset= Category.objects.all())
     item_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
     quantity = forms.IntegerField(max_value=50, widget=forms.NumberInput(attrs={'placeholder':'Quantity'}), required=True)
 
@@ -38,3 +38,11 @@ class StockSearchForm(forms.ModelForm):
     class Meta:
         model = Stock
         fields = ['category', 'item_name']
+
+
+class CategoryForm(forms.ModelForm):
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
+
+    class Meta:
+        model = Category
+        fields = ['name']

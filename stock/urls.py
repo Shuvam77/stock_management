@@ -11,5 +11,5 @@ urlpatterns = [
     path("list_items/delete_item/<int:pk>", views.DeleteItem.as_view(), name="delete_item"),
     path('search/', views.SearchItems.as_view(), name='search_result'),
 
-
+    path("list_category/", views.ListCategory.as_view(), name="list_category"),
 ]

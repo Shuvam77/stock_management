@@ -11,9 +11,15 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:list_items' %}">List</a>
         </li>
-        {% comment %} <li class="nav-item">
+        {% if user.is_superuser %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'stock:list_category' %}" >Category</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li> {% endcomment %}
+        </li>
+        {% endif %}
       </ul>
       <form class="form-inline mt-2 mt-md-0" action="{% url 'stock:search_result' %}">
         <input class="form-control mr-sm-2" name="category" type="text" placeholder="Category" aria-label="Search">

@@ -5,7 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import StockForm, StockSearchForm
 from django.db.models import Q
 
-from stock.models import Stock
+from stock.models import Category, Stock
 # Create your views here.
 
 
@@ -71,5 +71,13 @@ class SearchItems(ListView):
         )
         return queryset
 
+
+
+
+class ListCategory(ListView):
+    model = Category
+    paginate_by= 10
+    context_object_name = 'categories'
+    template_name = 'list_categories.html'
 
 
