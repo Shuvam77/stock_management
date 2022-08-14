@@ -14,6 +14,8 @@ urlpatterns = [
     path("list_category/", views.ListCategory.as_view(), name="list_category"),
     path("create_category/", views.CreateCategory.as_view(), name="create_category"),
     path("update_category/<int:pk>", views.UpdateCategory.as_view(), name="update_category"),
+    path("delete_category/<int:pk>", views.DeleteCategory.as_view(), name="delete_category"),
+
 
 
 ]

@@ -38,7 +38,7 @@
                     <th scope="row">{{item.id}}</th>
                     <td>{{ item.name }}</td>
                     <td><button id="update-category" class="update-category btn btn-primary" type="button" name="update-button" data-form-url="{% url 'stock:update_category' item.id %}">Update</button></td>
-                    <td><a class="btn btn-danger" href="#"><span class="fa fa-trash"></span> Delete</a></td>
+                    <td><button id="delete-category" class="delete-category btn btn-danger" type="button" name="delete-button" data-form-url="{% url 'stock:delete_category' item.id %}">Delete</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -60,13 +60,22 @@
 <script type="text/javascript">
 
     $(function(){
+
+        //Update category modal
+        $('.delete-category').each(function(){
+            $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                isDeleteForm: true
+        
+            });
+        });
         
         //Update category modal
         $('.update-category').each(function(){
             $(this).modalForm({
                 formURL: $(this).data("form-url"),
 
-            })
+            });
         });
 
         //Create Category modal
