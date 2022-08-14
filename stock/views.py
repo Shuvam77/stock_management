@@ -3,7 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import CategoryForm, StockForm, StockSearchForm
 from django.db.models import Q
-from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
 from stock.models import Category, Stock
 # Create your views here.
@@ -86,5 +86,14 @@ class CreateCategory(BSModalCreateView):
     template_name = 'create_category.html'
     success_message = 'Success: Book was created.'
     success_url= reverse_lazy('stock:list_category')
+
+
+class UpdateCategory(BSModalUpdateView):
+    form_class = CategoryForm
+    model = Category
+    template_name = 'update_category.html'
+    success_message = 'Success: Book was updated.'
+    success_url= reverse_lazy('stock:list_category')
+
 
 
