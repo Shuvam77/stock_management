@@ -48,7 +48,14 @@
                     </td> {% endcomment %}
                 </tr>
                 {% endfor %}
+
             </tbody>
+            <tfoot>
+                <tr>
+                    <td><a class="export-csv btn btn-info" type="button" href="{% url 'stock:export_csv'%}">Export</a></td>
+                </tr>
+            </tfoot>
+
         </table>
     </div>
 

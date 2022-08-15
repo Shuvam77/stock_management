@@ -1,9 +1,12 @@
-from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import CategoryForm, StockForm, StockSearchForm
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+
+from django.http import HttpResponse
+import csv
 
 from stock.models import Category, Stock
 # Create your views here.
@@ -50,11 +53,6 @@ class DeleteItem(DeleteView):
     template_name= 'stock_delete_confirm.html'
     success_url= reverse_lazy('stock:list_items')
 
-    # def delete(self, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     self.object.delete()
-    #     return HttpResponseRedirect(reverse('stock:list_items'))
-
 
 class SearchItems(ListView):
     form_class = StockSearchForm
@@ -71,6 +69,16 @@ class SearchItems(ListView):
         )
         return queryset
 
+
+def ExportCSV(request):
+    response = HttpResponse(content_type = 'text/csv')
+    response['Content-Disposition'] = 'attachment; filename="List_of_stock.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['CATEGORY', 'ITEM NAME', 'QUANTITY'])
+    instance = Stock.objects.all()
+    for stock in instance:
+        writer.writerow([stock.category, stock.item_name, stock.quantity])
+    return response
 
 
 class ListCategory(ListView):
