@@ -67,7 +67,7 @@ class SearchItems(ListView):
         query2 = self.request.GET.get('item_name')
 
         queryset = Stock.objects.filter(
-            Q(category__icontains=query1), Q(item_name__icontains = query2)
+            Q(category__name__icontains=query1), Q(item_name__icontains = query2)
         )
         return queryset
 
