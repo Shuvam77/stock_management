@@ -132,6 +132,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+CRISPY_TEMPLATE_PACK = 'uni_form'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]

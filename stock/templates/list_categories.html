@@ -8,6 +8,26 @@
 
 <div class="container">
 
+    <!--Toast Message-->
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+
+        <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
+            <div class="alert-header">
+                <strong class="me-auto">Notification</strong>
+            </div>
+            <div class="alert-body">
+                {{message|safe}}
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    <!--Toast Message-->
+
     <div class="header">Categories!</div>
     {% if not categories %}
 
@@ -15,7 +35,7 @@
 
     {% else %}
     <div class="display_button">
-        <p><b>Add New:</b></p> 
+        <p><b>Add New:</b></p>
         <button id="create-category" class="btn btn-primary" type="button" name="button">Create Category</button>
     </div>
 
@@ -24,21 +44,25 @@
     <div class="display_table">
         <table class="table table-hover">
             <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Category</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Delete</th>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
 
-            </tr>
+                </tr>
             </thead>
             <tbody>
                 {% for item in categories %}
                 <tr>
                     <th scope="row">{{item.id}}</th>
                     <td>{{ item.name }}</td>
-                    <td><button id="update-category" class="update-category btn btn-primary" type="button" name="update-button" data-form-url="{% url 'stock:update_category' item.id %}">Update</button></td>
-                    <td><button id="delete-category" class="delete-category btn btn-danger" type="button" name="delete-button" data-form-url="{% url 'stock:delete_category' item.id %}">Delete</button></td>
+                    <td><button id="update-category" class="update-category btn btn-primary" type="button"
+                            name="update-button"
+                            data-form-url="{% url 'stock:update_category' item.id %}">Update</button></td>
+                    <td><button id="delete-category" class="delete-category btn btn-danger" type="button"
+                            name="delete-button"
+                            data-form-url="{% url 'stock:delete_category' item.id %}">Delete</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -47,7 +71,7 @@
 
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
-          <div class="modal-content"></div>
+            <div class="modal-content"></div>
         </div>
     </div>
 
@@ -58,20 +82,19 @@
 
 {% block extrascripts %}
 <script type="text/javascript">
-
-    $(function(){
+    $(function () {
 
         //Update category modal
-        $('.delete-category').each(function(){
+        $('.delete-category').each(function () {
             $(this).modalForm({
                 formURL: $(this).data("form-url"),
                 isDeleteForm: true
-        
+
             });
         });
-        
+
         //Update category modal
-        $('.update-category').each(function(){
+        $('.update-category').each(function () {
             $(this).modalForm({
                 formURL: $(this).data("form-url"),
 
@@ -81,7 +104,7 @@
         //Create Category modal
         $("#create-category").modalForm({
             formURL: "{% url 'stock:create_category' %}"
-        });  
+        });
     });
 </script>
 {% endblock %}
@@ -90,5 +113,5 @@
 
 
 {% comment %} {% block script %}
-    <script src="{% static 'js/stock.js' %}"></script>
+<script src="{% static 'js/stock.js' %}"></script>
 {% endblock  %} {% endcomment %}

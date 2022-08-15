@@ -4,6 +4,9 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import CategoryForm, StockForm, StockSearchForm
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+
 
 from django.http import HttpResponse
 import csv
@@ -30,10 +33,11 @@ class ListItem(ListView):
         return context
 
 
-class AddItem(CreateView):
+class AddItem(SuccessMessageMixin, CreateView):
     form_class = StockForm
     model = Stock
     template_name = 'add_item.html'
+    success_message = 'Success: Item was added.'
     success_url= reverse_lazy('stock:list_items')
 
     def form_valid(self, form):
@@ -41,16 +45,18 @@ class AddItem(CreateView):
         return super().form_valid(form)
 
 
-class UpdateItem(UpdateView):
+class UpdateItem(SuccessMessageMixin, UpdateView):
     form_class = StockForm
     model= Stock
     template_name = 'update_item.html'
+    success_message = 'Success: Item was updated.'
     success_url= reverse_lazy('stock:list_items')
 
 
-class DeleteItem(DeleteView):
+class DeleteItem(SuccessMessageMixin, DeleteView):
     model= Stock
     template_name= 'stock_delete_confirm.html'
+    success_message = 'Success: Item was deleted.'
     success_url= reverse_lazy('stock:list_items')
 
 
@@ -92,7 +98,7 @@ class CreateCategory(BSModalCreateView):
     form_class = CategoryForm
     model = Category
     template_name = 'create_category.html'
-    success_message = 'Success: Book was created.'
+    success_message = 'Success: Category was created.'
     success_url= reverse_lazy('stock:list_category')
 
 
@@ -100,13 +106,13 @@ class UpdateCategory(BSModalUpdateView):
     form_class = CategoryForm
     model = Category
     template_name = 'update_category.html'
-    success_message = 'Success: Book was updated.'
+    success_message = 'Success: Category was updated.'
     success_url= reverse_lazy('stock:list_category')
 
 class DeleteCategory(BSModalDeleteView):
     model = Category
     template_name = 'delete_category.html'
-    success_message = 'Success: Book was deleted.'
+    success_message = 'Success: Category was deleted.'
     success_url= reverse_lazy('stock:list_category')
 
 
