@@ -5,7 +5,7 @@ from .forms import StockForm
 # Register your models here.
 
 class StockFormAdmin(admin.ModelAdmin):
-    list_display = ['category', 'item_name', 'quantity', 'created_by']
+    list_display = ['category', 'item_name', 'quantity', 'received_by']
     # form = StockForm
     list_filter = ['category']
     search_fields = ['category', 'item_name'] 

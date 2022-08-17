@@ -41,7 +41,7 @@ class AddItem(SuccessMessageMixin, CreateView):
     success_url= reverse_lazy('stock:list_items')
 
     def form_valid(self, form):
-        form.instance.created_by = self.request.user
+        form.instance.received_by = self.request.user
         return super().form_valid(form)
 
 
