@@ -133,17 +133,16 @@ class ListDepartment(ListView):
 
 
 def createDepartment(request):
-    data = dict()
-    department = Department.objects.all()
 
     if request.POST.get('action') == 'post':
         name = request.POST.get('name')
         Department.objects.create(
             name = name
         )
+        messages.add_message(request, messages.SUCCESS, 'Success: Department Added.')
         
-        data['html'] = render_to_string('list_departments.html', {'departments': department} )
-        return JsonResponse(data)
+        response = response = {'status': 200, 'message': ("Success: Department Added")} 
+        return JsonResponse(response)
     return render(request, 'add_department.html')
 
 
