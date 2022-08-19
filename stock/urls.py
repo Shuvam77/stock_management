@@ -18,4 +18,10 @@ urlpatterns = [
 
     path("export_csv/", views.ExportCSV, name="export_csv"),
 
+
+    path("list_departments/", views.ListDepartment.as_view(), name="list_departments"),
+    path("add_department/", views.createDepartment, name="add_department"),
+
+
+
 ]

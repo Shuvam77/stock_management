@@ -1,17 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from stock.forms import CategoryForm, StockForm, StockSearchForm
+from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.template.loader import render_to_string
 
 
-from django.http import HttpResponse
+
+from django.http import HttpResponse, JsonResponse
 import csv
 
-from stock.models import Category, Stock
+from stock.models import Category, Department, Stock
 # Create your views here.
 
 
@@ -114,5 +116,34 @@ class DeleteCategory(BSModalDeleteView):
     template_name = 'delete_category.html'
     success_message = 'Success: Category was deleted.'
     success_url= reverse_lazy('stock:list_category')
+
+
+class ListDepartment(ListView):
+    model = Department
+    paginate_by= 10
+    context_object_name = 'departments'
+    template_name = 'list_departments.html'
+
+# class CreateDepartment(CreateView):
+#     form_class = DepartmentForm
+#     model = Department
+#     template_name = 'add_department.html'
+#     success_message = 'Success: Department was created.'
+#     success_url= reverse_lazy('stock:list_departments')
+
+
+def createDepartment(request):
+    data = dict()
+    department = Department.objects.all()
+
+    if request.POST.get('action') == 'post':
+        name = request.POST.get('name')
+        Department.objects.create(
+            name = name
+        )
+        
+        data['html'] = render_to_string('list_departments.html', {'departments': department} )
+        return JsonResponse(data)
+    return render(request, 'add_department.html')
 
 

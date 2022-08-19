@@ -15,9 +15,12 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:list_category' %}" >Category</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'stock:list_departments' %}" >Department</a>
+        </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Category</a>
         </li>
         {% endif %}
       </ul>

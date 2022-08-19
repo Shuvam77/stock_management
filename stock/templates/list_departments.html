@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="container">
+
+    <!--Toast Message-->
+    {% if messages %}
+    {% for message in messages %}
+
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+
+        <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
+            <div class="alert-header">
+                <strong class="me-auto">Notification</strong>
+            </div>
+            <div class="alert-body">
+                {{message|safe}}
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+    <!--Toast Message-->
+
+    <div class="header">Departments!</div>
+    {% if not departments %}
+
+    <p>No Department added. Add some <a id="create-department" data-toggle="modal" class="btn btn-primary" type="button"
+        data-target="#add-dep" data-url={% url 'stock:add_department' %}>Here!</a></p>
+
+    {% else %}
+    <div class="display_button">
+        <p><b>Add New:</b></p>
+        <button id="create-department" class="btn btn-primary" type="button" data-toggle="modal"
+        data-target="#add-dep" data-url={% url 'stock:add_department' %}>Create Department</button>
+    </div>
+
+    <hr>
+
+    <div class="display_table">
+        <table class="table table-hover" id="data-table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in departments %}
+                <tr>
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{ item.name }}</td>
+                    <td><button id="update-dep" class="update-dep btn btn-primary" type="button"
+                            name="update-button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">Update</button></td>
+                    <td><button id="delete-dep" class="delete-dep btn btn-danger" type="button"
+                            name="delete-button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">Delete</button></td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+$(document).ready(function () {
+    $(function() {
+        $("#create-department").on('click', function(event){
+            getCreateForm();
+        });
+    });
+
+    const getCreateForm = (()=>{
+        $.ajax({
+            type: 'GET',
+            url: $('#create-department').attr("data-url"),
+        });
+    });
+
+    $(document).on('submit', "#create-form", function(e){
+        e.preventDefault();
+        $.ajax({
+            type: "post",
+            url: "{% url 'stock:add_department' %}",
+            dataType: "json",
+            data:{
+                name: $("#name").val(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function(response){
+                //$("#data_table").html(response.html);
+                //$("#add-dep").modal("hide");
+                location.reload();
+            }
+        });
+    });
+
+
+});
+</script>
+
+{% include 'add_department.html' %}
+{% endblock %}
+

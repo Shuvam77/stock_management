@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Stock
+from .models import Category, Department, Stock
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 # Category = (
@@ -16,10 +16,13 @@ class StockForm(forms.ModelForm):
     category = forms.ModelChoiceField(required=True, queryset= Category.objects.all())
     item_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
     quantity = forms.IntegerField(max_value=50, widget=forms.NumberInput(attrs={'placeholder':'Quantity'}), required=True)
+    price = forms.DecimalField(max_digits=6, decimal_places=2, widget=forms.NumberInput(attrs={'placeholder':'Price'}), required=True)
+    reorder_level = forms.IntegerField(max_value=100, widget=forms.NumberInput(attrs={'placeholder':'Re-Order Level'}), required=True)
+
 
     class Meta:
         model = Stock
-        fields = ['category', 'item_name', 'quantity']
+        fields = ['category', 'item_name', 'quantity', 'price', 'reorder_level']
 
     # Important in (forms.Form)
     def clean(self):
@@ -46,4 +49,12 @@ class CategoryForm(BSModalModelForm):
 
     class Meta:
         model = Category
+        fields = ['name']
+
+
+class DepartmentForm(forms.ModelForm):
+    name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
+
+    class Meta:
+        model = Department
         fields = ['name']

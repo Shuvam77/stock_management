@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'bootstrap_modal_forms',
 ]
 
+CRISPY_TEMPLATE_PACK = 'uni_form'
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -132,8 +135,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-CRISPY_TEMPLATE_PACK = 'uni_form'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
