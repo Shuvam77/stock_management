@@ -52,7 +52,7 @@ class CategoryForm(BSModalModelForm):
         fields = ['name']
 
 
-class DepartmentForm(forms.ModelForm):
+class DepartmentForm(BSModalModelForm):
     name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'placeholder':'Name'}), required=True)
 
     class Meta:

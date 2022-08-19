@@ -20,7 +20,10 @@ urlpatterns = [
 
 
     path("list_departments/", views.ListDepartment.as_view(), name="list_departments"),
-    path("add_department/", views.createDepartment, name="add_department"),
+    path("add_department/", views.CreateDepartment.as_view(), name="add_department"),
+    path("update_department/<int:pk>", views.UpdateDepartment.as_view(), name="update_department"),
+    path("delete_department/<int:pk>", views.DeleteDepartment.as_view(), name="delete_department"),
+
 
 
 

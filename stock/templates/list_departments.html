@@ -28,14 +28,13 @@
     <div class="header">Departments!</div>
     {% if not departments %}
 
-    <p>No Department added. Add some <a id="create-department" data-toggle="modal" class="btn btn-primary" type="button"
-        data-target="#add-dep" data-url={% url 'stock:add_department' %}>Here!</a></p>
-
+    {% comment %} <p>No Department added. Add some <a id="create-department" data-toggle="modal" class="btn btn-primary" type="button"
+        data-target="#add-dep" data-url={% url 'stock:add_department' %}>Here!</a></p> {% endcomment %}
+        <p>No Department added. Add some <a id="create-dep" class="create-dep btn btn-primary" type="button" >Here!</a></p> 
     {% else %}
     <div class="display_button">
         <p><b>Add New:</b></p>
-        <button id="create-department" class="btn btn-primary" type="button" data-toggle="modal"
-        data-target="#add-dep" data-url={% url 'stock:add_department' %}>Create Department</button>
+        <button id="create-dep" class="create-dep btn btn-primary" type="button">Create Department</button>
     </div>
 
     <hr>
@@ -58,12 +57,10 @@
                     <td>{{ item.name }}</td>
                     <td><button id="update-dep" class="update-dep btn btn-primary" type="button"
                             name="update-button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">Update</button></td>
+                            data-form-url="{% url 'stock:update_department' item.id %}">Update</button></td>
                     <td><button id="delete-dep" class="delete-dep btn btn-danger" type="button"
                             name="delete-button"
-                            data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">Delete</button></td>
+                            data-form-url="{% url 'stock:delete_department' item.id %}">Delete</button></td>
                 </tr>
                 {% endfor %}
 
@@ -117,19 +114,20 @@
         </ul>
     </nav>
 
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
     {% endif %}
 
 </div>
 
-<script>
+{% comment %} <script>
 $(document).ready(function () {
-    $(function() {
-        $("#create-department").on('click', function(event){
-            getCreateForm();
-        });
-    });
-
-    const getCreateForm = (()=>{
+    $(document).on('click', "#create-department",function(){
         $.ajax({
             type: 'GET',
             url: $('#create-department').attr("data-url"),
@@ -155,11 +153,37 @@ $(document).ready(function () {
             }
         });
     });
-
-
 });
-</script>
+</script> {% endcomment %}
 
-{% include 'add_department.html' %}
+{% endblock %}
+
+{% block extrascripts %}
+<script type="text/javascript">
+    $(function () {
+
+        //delete category modal
+        $('.delete-dep').each(function () {
+            $(this).modalForm({
+                formURL: $(this).data("form-url"),
+                isDeleteForm: true
+
+            });
+        });
+
+        //Update category modal
+        $('.update-dep').each(function () {
+            $(this).modalForm({
+                formURL: $(this).data("form-url"),
+
+            });
+        });
+
+        //Create Category modal
+        $("#create-dep").modalForm({
+            formURL: "{% url 'stock:add_department' %}"
+        });
+    });
+</script>
 {% endblock %}
 

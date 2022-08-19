@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm
@@ -124,25 +124,36 @@ class ListDepartment(ListView):
     context_object_name = 'departments'
     template_name = 'list_departments.html'
 
-# class CreateDepartment(CreateView):
-#     form_class = DepartmentForm
-#     model = Department
-#     template_name = 'add_department.html'
-#     success_message = 'Success: Department was created.'
-#     success_url= reverse_lazy('stock:list_departments')
+class CreateDepartment(BSModalCreateView):
+    form_class = DepartmentForm
+    model = Department
+    template_name = 'add_department.html'
+    success_message = 'Success: Department was created.'
+    success_url= reverse_lazy('stock:list_departments')
 
 
-def createDepartment(request):
-
-    if request.POST.get('action') == 'post':
-        name = request.POST.get('name')
-        Department.objects.create(
-            name = name
-        )
-        messages.add_message(request, messages.SUCCESS, 'Success: Department Added.')
+# def createDepartment(request):
+#     if request.POST.get('action') == 'post':
+#         name = request.POST.get('name')
+#         Department.objects.create(
+#             name = name
+#         )
+#         messages.add_message(request, messages.SUCCESS, 'Success: Department Added.')
         
-        response = response = {'status': 200, 'message': ("Success: Department Added")} 
-        return JsonResponse(response)
-    return render(request, 'add_department.html')
+#         response = {'status': 200, 'message': ("Success: Department Added")} 
+#         return JsonResponse(response)
+#     return render(request, 'add_department.html')
 
+class UpdateDepartment(BSModalUpdateView):
+    form_class = DepartmentForm
+    model = Department
+    template_name = 'update_department.html'
+    success_message = 'Success: Department was updated.'
+    success_url= reverse_lazy('stock:list_departments')
+
+class DeleteDepartment(BSModalDeleteView):
+    model = Department
+    template_name = 'delete_department.html'
+    success_message = 'Success: Department was deleted.'
+    success_url= reverse_lazy('stock:list_departments')
 
