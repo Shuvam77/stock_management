@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends '../base.html' %}
 {% load static %}
 
 {% block content %}
@@ -54,7 +54,7 @@
                 <tr>
                     <th scope="row">{{item.id}}</th>
                     <td>{{ item.category }}</td>
-                    <td>{{ item.item_name }}</td>
+                    <td><a href="{% url 'stock:item_detail' item.id %}">{{ item.item_name }}</a></td>
                     <td>{{ item.quantity }}</td>
                     <td><a class="btn btn-primary" href="{% url 'stock:update_item' item.id %}">Update</a></td>
                     <td><a class="btn btn-danger" href="{% url 'stock:delete_item' item.id %}">Delete</a></td>

@@ -1,0 +1,64 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+    {% if item.reorder_status is False %}
+    <div class="alert alert-danger" role="alert">
+        You have reached your <b>ROL</b>. Purchase <a href="#">here</a>.
+    </div>
+    {% endif %}
+
+    <section class="vh-50 gradient-custom-2">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-10 col-lg-8 col-xl-6">
+
+                    <div class="card bg-light mb-3" style="width: 27rem; height:30rem;">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">{{item.item_name}}</h5>
+                            <hr>
+
+                            <ul class="list-group list-group-flush bg-light">
+                                <li class="list-group-item">Category: {{item.category}}</li>
+                                <li class="list-group-item">Quantity: {{item.quantity}}</li>
+                                <li class="list-group-item">Price: {{item.price}}</li>
+                                <li class="list-group-item">Total Price: {{item.get_total_amount}}</li>
+                                <li class="list-group-item">Received/Purchased By: : {{item.received_by}}</li>
+                                <li class="list-group-item">Re-Order Level: {{item.reorder_level}}</li>
+                                <li class="list-group-item">Re-Order Status:
+                                    {% if item.reorder_status is True %}
+                                    Everything is good!
+                                    {% else %}
+                                    Purchase Item.
+                                    {% endif %}
+                                </li>
+                            </ul>
+
+
+
+                            {% comment %} <h6 class="card-subtitle mb-2 text-muted">Category: {{item.category}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Quantity: {{item.quantity}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Price: {{item.price}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Received/Purchased By: : {{item.received_by}}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Re-Order Level: {{item.reorder_level}}</h6>
+                             {% endcomment %}
+                            <div class="card-footer bg-transparent border-default">
+                                <a href="#" class="card-link">Issue Item</a>
+                                <a href="#" class="card-link disabled" tabindex="-1" aria-disabled="true">Purchase Item</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+
+{% endblock %}

@@ -41,6 +41,12 @@ class Stock(models.Model):
     def get_total_amount(self):
         return self.quantity * self.price
 
+    def reorder_status(self):
+        if self.quantity >= self.reorder_level:
+            return True
+        else:
+            return False
+
 
 class Department(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)

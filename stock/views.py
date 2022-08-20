@@ -1,12 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
-from django.template.loader import render_to_string
 
 
 
@@ -26,7 +25,7 @@ class ListItem(ListView):
     model = Stock
     paginate_by= 10
     context_object_name = 'stock_list'
-    template_name = 'list_items.html'
+    template_name = 'stock/list_items.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,7 +37,7 @@ class ListItem(ListView):
 class AddItem(SuccessMessageMixin, CreateView):
     form_class = StockForm
     model = Stock
-    template_name = 'add_item.html'
+    template_name = 'stock/add_item.html'
     success_message = 'Success: Item was added.'
     success_url= reverse_lazy('stock:list_items')
 
@@ -50,22 +49,28 @@ class AddItem(SuccessMessageMixin, CreateView):
 class UpdateItem(SuccessMessageMixin, UpdateView):
     form_class = StockForm
     model= Stock
-    template_name = 'update_item.html'
+    template_name = 'stock/update_item.html'
     success_message = 'Success: Item was updated.'
     success_url= reverse_lazy('stock:list_items')
 
 
 class DeleteItem(SuccessMessageMixin, DeleteView):
     model= Stock
-    template_name= 'stock_delete_confirm.html'
+    template_name= 'stock/stock_delete_confirm.html'
     success_message = 'Success: Item was deleted.'
     success_url= reverse_lazy('stock:list_items')
+
+
+class DetailItem(DetailView):
+    model= Stock
+    template_name= 'stock/stock_detail.html'
+    context_object_name = 'item'
 
 
 class SearchItems(ListView):
     form_class = StockSearchForm
     model = Stock
-    template_name = 'list_items.html'
+    template_name = 'stock/list_items.html'
     context_object_name = 'stock_list'
 
     def get_queryset(self):
@@ -93,13 +98,13 @@ class ListCategory(ListView):
     model = Category
     paginate_by= 10
     context_object_name = 'categories'
-    template_name = 'list_categories.html'
+    template_name = 'category/list_categories.html'
 
 
 class CreateCategory(BSModalCreateView):
     form_class = CategoryForm
     model = Category
-    template_name = 'create_category.html'
+    template_name = 'category/create_category.html'
     success_message = 'Success: Category was created.'
     success_url= reverse_lazy('stock:list_category')
 
@@ -107,13 +112,14 @@ class CreateCategory(BSModalCreateView):
 class UpdateCategory(BSModalUpdateView):
     form_class = CategoryForm
     model = Category
-    template_name = 'update_category.html'
+    template_name = 'category/update_category.html'
     success_message = 'Success: Category was updated.'
     success_url= reverse_lazy('stock:list_category')
 
+
 class DeleteCategory(BSModalDeleteView):
     model = Category
-    template_name = 'delete_category.html'
+    template_name = 'category/delete_category.html'
     success_message = 'Success: Category was deleted.'
     success_url= reverse_lazy('stock:list_category')
 
@@ -122,12 +128,13 @@ class ListDepartment(ListView):
     model = Department
     paginate_by= 10
     context_object_name = 'departments'
-    template_name = 'list_departments.html'
+    template_name = 'department/list_departments.html'
+
 
 class CreateDepartment(BSModalCreateView):
     form_class = DepartmentForm
     model = Department
-    template_name = 'add_department.html'
+    template_name = 'department/add_department.html'
     success_message = 'Success: Department was created.'
     success_url= reverse_lazy('stock:list_departments')
 
@@ -144,16 +151,18 @@ class CreateDepartment(BSModalCreateView):
 #         return JsonResponse(response)
 #     return render(request, 'add_department.html')
 
+
 class UpdateDepartment(BSModalUpdateView):
     form_class = DepartmentForm
     model = Department
-    template_name = 'update_department.html'
+    template_name = 'department/update_department.html'
     success_message = 'Success: Department was updated.'
     success_url= reverse_lazy('stock:list_departments')
 
+
 class DeleteDepartment(BSModalDeleteView):
     model = Department
-    template_name = 'delete_department.html'
+    template_name = 'department/delete_department.html'
     success_message = 'Success: Department was deleted.'
     success_url= reverse_lazy('stock:list_departments')
 
