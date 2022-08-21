@@ -46,7 +46,7 @@
                             <h6 class="card-subtitle mb-2 text-muted">Re-Order Level: {{item.reorder_level}}</h6>
                              {% endcomment %}
                             <div class="card-footer bg-transparent border-default">
-                                <a href="#" class="card-link">Issue Item</a>
+                                <a href="{% url 'stock:issue_item' %}" class="card-link">Issue Item</a>
                                 <a href="#" class="card-link disabled" tabindex="-1" aria-disabled="true">Purchase Item</a>
                             </div>
 

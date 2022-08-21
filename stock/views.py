@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm
+from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm, IssueItems
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
@@ -12,7 +12,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
 import csv
 
-from stock.models import Category, Department, Stock
+from stock.models import Category, Department, Issue, Stock
 # Create your views here.
 
 
@@ -166,3 +166,14 @@ class DeleteDepartment(BSModalDeleteView):
     success_message = 'Success: Department was deleted.'
     success_url= reverse_lazy('stock:list_departments')
 
+
+class IssueItem(SuccessMessageMixin, CreateView):
+    form_class = IssueItems
+    model = Issue
+    template_name = 'issue/issue_item.html'
+    success_message = 'Success: Item was issued successfully!.'
+    success_url= reverse_lazy('stock:list_items')
+
+    def form_valid(self, form):
+        form.instance.issued_by = self.request.user
+        return super().form_valid(form)

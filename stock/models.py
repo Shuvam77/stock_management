@@ -73,7 +73,7 @@ class DepartmentItem(models.Model):
         verbose_name_plural = ("DepartmentItems")
 
     def __str__(self):
-        return self.item_id
+        return self.item_id.item_name
 
 
 class OrderTicket(models.Model):
@@ -124,5 +124,5 @@ class Issue(models.Model):
         verbose_name_plural = ("Issues")
 
     def __str__(self):
-        return self.issued_to
+        return self.issued_to.name
 

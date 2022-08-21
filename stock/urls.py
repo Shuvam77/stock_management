@@ -24,13 +24,13 @@ urlpatterns = [
     path("delete_category/<int:pk>/", views.DeleteCategory.as_view(), name="delete_category"),
 
 
-
     path("list_departments/", views.ListDepartment.as_view(), name="list_departments"),
     path("add_department/", views.CreateDepartment.as_view(), name="add_department"),
     path("update_department/<int:pk>/", views.UpdateDepartment.as_view(), name="update_department"),
     path("delete_department/<int:pk>/", views.DeleteDepartment.as_view(), name="delete_department"),
 
 
+    path("issue_item/", views.IssueItem.as_view(), name="issue_item"),
 
 
 ]

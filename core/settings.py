@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'stock',
+    'stock.apps.StockConfig',
     
     'crispy_forms',
     'bootstrap_modal_forms',
