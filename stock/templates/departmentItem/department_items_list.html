@@ -1,0 +1,118 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="container">
+
+    <!--Toast Message-->
+    {% if messages %}
+    {% for message in messages %}
+
+    <div id="position-fixed top-0 end-0 p-3" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+
+        <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
+            <div class="alert-header">
+                <strong class="me-auto">Notification</strong>
+            </div>
+            <div class="alert-body">
+                {{message|safe}}
+            </div>
+        </div>
+    </div>
+    
+    {% endfor %}
+    {% endif %}
+    <!--Toast Message-->
+
+    <div class="header">{{title}}</div>
+    {% if not items %}
+
+    <p>No items here. <a href="{% url 'stock:issue_item' %}"> Issue Items</a></p>
+
+    {% else %}
+
+    <div class="display_table">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{ item.dep_id }}</td>
+                    <td>{{ item.item_id }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                {% comment %} <tr>
+                    <td><a class="export-csv btn btn-info" type="button" href="{% url 'stock:export_csv'%}">Export</a>
+                    </td>
+                </tr> {% endcomment %}
+            </tfoot>
+        </table>
+    </div>
+
+    <nav aria-label="pagination">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" >Previous</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">&laquo; first</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+            {% endif %}
+
+            {% for i in paginator.page_range %} 
+                {% if page_obj.number == i %}
+                    <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+                {% else %}
+                    <li class="page-item">
+                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    </li>
+                {% endif %} 
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" >Last  &raquo;</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% endif %}
+    </div>
+    {% endblock %}
+
+    {% comment %} {% block script %}
+    <script src="{% static 'js/stock.js' %}"></script>
+    {% endblock  %} {% endcomment %}

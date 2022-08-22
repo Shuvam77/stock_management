@@ -12,7 +12,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
 import csv
 
-from stock.models import Category, Department, Issue, Stock
+from stock.models import Category, Department, Issue, Stock, DepartmentItem
 # Create your views here.
 
 
@@ -177,3 +177,16 @@ class IssueItem(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         form.instance.issued_by = self.request.user
         return super().form_valid(form)
+
+class IssueList(ListView):
+    model = Issue
+    paginate_by= 10
+    context_object_name = 'issues'
+    template_name = 'issue/issue_list.html'
+
+
+class DepartmentItemList(ListView):
+    model = DepartmentItem
+    paginate_by= 10
+    context_object_name = 'items'
+    template_name = 'departmentItem/department_items_list.html'

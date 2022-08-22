@@ -31,6 +31,10 @@ urlpatterns = [
 
 
     path("issue_item/", views.IssueItem.as_view(), name="issue_item"),
+    path("issue_list/", views.IssueList.as_view(), name="issue_list"),
+
+
+    path("department_item_list/", views.DepartmentItemList.as_view(), name="dep_item_list"),
 
 
 ]
