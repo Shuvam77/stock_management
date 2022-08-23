@@ -37,4 +37,7 @@ urlpatterns = [
     path("department_item_list/", views.DepartmentItemList.as_view(), name="dep_item_list"),
 
 
+    path("issue_ticket/", views.IssueTicket.as_view(), name="issue_ticket")
+
+
 ]

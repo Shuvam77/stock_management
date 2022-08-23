@@ -6,7 +6,48 @@
     <h1>This is a Heading</h1>
     <p>{{something}}</p>
     <a href="{% url 'stock:add_item' %}">Add New</a>
+    <a href="{% url 'stock:issue_ticket' %}">Issue Ticket</a>
 </div>
+<div>
+    <div class="display_table">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Status</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <th scope="row">{{item.id}}</th>
+                    <td>{{ item.dep_id }}</td>
+                    <td>{{ item.category_id }}</td>
+                    <td>{{ item.order_item }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.remarks }}</td>
+                    <td>{{ item.status }}</td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+            <tfoot>
+                {% comment %} <tr>
+                    <td><a class="export-csv btn btn-info" type="button" href="{% url 'stock:export_csv'%}">Export</a>
+                    </td>
+                </tr> {% endcomment %}
+            </tfoot>
+        </table>
+    </div>
+</div>
+
 
 
 {% endblock %}

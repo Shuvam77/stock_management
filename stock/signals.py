@@ -8,7 +8,6 @@ def validate_issue_number(sender, instance, **kwargs):
     if instance.issued_quantity > instance.issued_item.quantity:
         raise ValidationError("Issue is greater than available quantity.")
         
-
     
 @receiver(post_save, sender=Issue)
 def del_quantity_stock(sender, created, instance, **kwargs):

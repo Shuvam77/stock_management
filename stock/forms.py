@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Department, Stock, Issue
+from .models import Category, Department, Stock, Issue, OrderTicket
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 # Category = (
@@ -64,3 +64,10 @@ class IssueItems(forms.ModelForm):
     class Meta:
         model = Issue
         fields = ['issued_item', 'issued_to', 'order_ticket_id', 'issued_quantity']
+
+
+class IssueTickets(forms.ModelForm):
+
+    class Meta:
+        model = OrderTicket
+        fields = ['category_id', 'dep_id', 'order_item', 'quantity', 'remarks']

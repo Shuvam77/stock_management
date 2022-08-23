@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm, IssueItems
+from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm, IssueItems, IssueTickets
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
@@ -12,13 +12,15 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
 import csv
 
-from stock.models import Category, Department, Issue, Stock, DepartmentItem
+from stock.models import Category, Department, Issue, OrderTicket, Stock, DepartmentItem
 # Create your views here.
 
 
 def home(request):
     something = "Page working!"
-    return render(request, "home.html", {"something": something})
+    order_tickets = OrderTicket.objects.all()
+    context = {'items':order_tickets, 'something': something}
+    return render(request, "home.html", context)
 
 
 class ListItem(ListView):
@@ -190,3 +192,15 @@ class DepartmentItemList(ListView):
     paginate_by= 10
     context_object_name = 'items'
     template_name = 'departmentItem/department_items_list.html'
+
+
+class IssueTicket(CreateView):
+    form_class = IssueTickets
+    model = OrderTicket
+    template_name = 'department/issue_ticket.html'
+    success_message = 'Success: Item was ordered successfully!.'
+    success_url= reverse_lazy('stock:home')
+
+    def form_valid(self, form):
+        form.instance.issued_by = self.request.user
+        return super().form_valid(form)

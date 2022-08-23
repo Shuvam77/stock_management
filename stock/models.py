@@ -20,10 +20,10 @@ class Category(models.Model):
 class Stock(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_name')
     item_name = models.CharField(max_length=50, blank=True, null=True)
-    quantity = models.IntegerField(default=0, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
     price = models.DecimalField(default=0.00, max_digits=6, decimal_places=2, blank=True, null=True)
     received_by = models.CharField(max_length=50, blank=True, null=True)
-    reorder_level = models.IntegerField(default=0, blank=True, null=True)
+    reorder_level = models.PositiveIntegerField(default=0, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 
@@ -63,7 +63,7 @@ class Department(models.Model):
 class DepartmentItem(models.Model):
     dep_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='dep_name')
     item_id = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name='dep_item_name')
-    quantity = models.IntegerField(default=0, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
     last_updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 
@@ -91,7 +91,7 @@ class OrderTicket(models.Model):
     dep_id = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='ord_dep_name')
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='ord_cat_name')
     order_item = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name='ord_item_name')
-    quantity = models.IntegerField(default=0, blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
     issued_by = models.CharField(max_length=50, blank=True, null=True)
     fulfilled_by = models.CharField(max_length=50, blank=True, null=True)
     remarks = models.TextField(max_length=255, blank=False)
@@ -113,7 +113,7 @@ class Issue(models.Model):
     issued_item = models.ForeignKey(Stock, on_delete=models.CASCADE, related_name='issued_item_name')
     issued_to = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department_name')
     order_ticket_id = models.ForeignKey(OrderTicket, on_delete=models.CASCADE, related_name='ord_issue', blank=True, null=True)
-    issued_quantity = models.IntegerField(default=0, blank=True, null=True)
+    issued_quantity = models.PositiveIntegerField(default=0, blank=True, null=True)
     issued_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated_at = models.DateTimeField(auto_now_add=False, auto_now=True)
     last_updated_by =  models.CharField(max_length=50, blank=True, null=True)
