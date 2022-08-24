@@ -71,3 +71,18 @@ class IssueTickets(forms.ModelForm):
     class Meta:
         model = OrderTicket
         fields = ['category_id', 'dep_id', 'order_item', 'quantity', 'remarks']
+
+
+class EditTicketStatus(forms.ModelForm):
+
+    class Meta:
+        model = OrderTicket
+        fields = ['dep_id', 'order_item', 'quantity', 'remarks', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["dep_id"].disabled = True
+        # self.fields["dep_id"].widget.attrs["readonly"] = True
+        self.fields["order_item"].disabled = True
+        self.fields["quantity"].disabled = True
+        self.fields["remarks"].disabled = True

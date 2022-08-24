@@ -37,7 +37,8 @@ urlpatterns = [
     path("department_item_list/", views.DepartmentItemList.as_view(), name="dep_item_list"),
 
 
-    path("issue_ticket/", views.IssueTicket.as_view(), name="issue_ticket")
+    path("issue_ticket/", views.IssueTicket.as_view(), name="issue_ticket"),
+    path("edit_ticket_status/<int:pk>/", views.EditTicketStatus.as_view(), name="edit_ticket_status")
 
 
 ]

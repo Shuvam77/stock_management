@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm, IssueItems, IssueTickets
+from stock.forms import CategoryForm, DepartmentForm, StockForm, StockSearchForm, IssueItems, IssueTickets, EditTicketStatus
 from django.db.models import Q
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 
@@ -204,3 +205,13 @@ class IssueTicket(CreateView):
     def form_valid(self, form):
         form.instance.issued_by = self.request.user
         return super().form_valid(form)
+
+class EditTicketStatus(PermissionRequiredMixin, UpdateView):
+    form_class = EditTicketStatus
+    model = OrderTicket
+    permission_required = 'OrderTicket.change_OrderTicket'
+    template_name = 'department/edit_ticket_status.html'
+    success_url= reverse_lazy('stock:home')
+
+
+

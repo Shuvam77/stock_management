@@ -20,6 +20,9 @@
                     <th scope="col">Quantity</th>
                     <th scope="col">Remarks</th>
                     <th scope="col">Status</th>
+                    {% if user.is_superuser %}
+                    <th scope="col">Edit</th>
+                    {% endif %}
 
                 </tr>
             </thead>
@@ -33,6 +36,9 @@
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.remarks }}</td>
                     <td>{{ item.status }}</td>
+                    {% if user.is_superuser %}
+                    <td><a href="{% url 'stock:edit_ticket_status' item.id %}">Edit</a></td>
+                    {% endif %}
 
                 </tr>
                 {% endfor %}
