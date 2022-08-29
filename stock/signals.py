@@ -1,7 +1,7 @@
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.forms import ValidationError
-from stock.models import DepartmentItem, Issue, Stock
+from stock.models import DepartmentItem, Issue, OrderTicket, Stock
 
 @receiver(pre_save, sender=Issue)
 def validate_issue_number(sender, instance, **kwargs):
@@ -32,3 +32,13 @@ def add_departmentItem(sender, created, instance, **kwargs):
                 quantity = instance.issued_quantity,
                 )
             add.save()
+
+@receiver(post_save, sender=Issue)
+def ticket_status_chg(sender, created, instance, **kwargs):
+    if created:
+        if not instance.order_ticket_id:
+            pass
+        else:
+            search_ticket = OrderTicket.objects.get(id=instance.order_ticket_id.id)
+            search_ticket.status = "AP"
+            search_ticket.save()

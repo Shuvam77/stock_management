@@ -14,7 +14,7 @@ class Category(models.Model):
         verbose_name_plural = ("Categories")
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class Stock(models.Model):
@@ -33,7 +33,7 @@ class Stock(models.Model):
         verbose_name_plural = ("Stocks")
 
     def __str__(self):
-        return self.item_name
+        return f"{self.item_name}"
 
     def get_absolute_url(self):
         return reverse('stock:list_items')
@@ -57,7 +57,7 @@ class Department(models.Model):
         verbose_name_plural = ("Departments")
 
     def __str__(self):
-        return self.name
+        return f"{self.name}"
 
 
 class DepartmentItem(models.Model):
@@ -73,7 +73,7 @@ class DepartmentItem(models.Model):
         verbose_name_plural = ("DepartmentItems")
 
     def __str__(self):
-        return self.item_id.item_name
+        return f"{self.item_id.item_name}"
 
 
 class OrderTicket(models.Model):
@@ -105,7 +105,7 @@ class OrderTicket(models.Model):
         verbose_name_plural = ("OrderTickets")
 
     def __str__(self):
-        return self.order_item
+        return f"{self.order_item}"
 
 
 class Issue(models.Model):
@@ -124,5 +124,5 @@ class Issue(models.Model):
         verbose_name_plural = ("Issues")
 
     def __str__(self):
-        return self.issued_to.name
+        return f"{self.issued_to.name}"
 
