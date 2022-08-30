@@ -3,20 +3,72 @@
 
 {% block content %}
 
+{% comment %} <div class="container mt-3" style="width: 75% font-size: 14px">
+    <h1>Issue Item</h1>
+    <form action="" class="card p-3 mt-5" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form|crispy }}
+        </table>
+        <input type="submit" class="btn btn-primary mt-2" value="Save">
+    </form>
+
+</div> {% endcomment %}
+
+
+
 <div class="container mt-3" style="width: 75% font-size: 14px">
     <h1>Issue Item</h1>
     <form action="" class="card p-3 mt-5" method="post">
         {% csrf_token %}
-       <table>
-           {{ form|crispy }}
-       </table>
-       <input type="submit" class="btn btn-primary mt-2" value="Save">
-   </form>
-   
+
+            <div id="div_id_issued_item" class="ctrlHolder">
+                <label for="id_issued_item" class="requiredField">
+                    Issued item<span class="asteriskField">*</span>
+                </label>
+                <select name="issued_item" class="select" required id="id_issued_item">
+                    <option value="" selected>---------</option>
+
+                    {% for item in issue_item %}
+                    <option value="{{item.id}}">{{item}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div id="div_id_issued_to" class="ctrlHolder">
+                <label for="id_issued_to" class="requiredField">
+                    Issued to<span class="asteriskField">*</span>
+                </label>
+                <select name="issued_to" class="select" required id="id_issued_to">
+                    <option value="" selected>---------</option>
+                    {% for dep in department_name  %}
+                    <option value="{{dep.id}}">{{dep}}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+            <div id="div_id_order_ticket_id" class="ctrlHolder">
+                <label for="id_order_ticket_id">
+                    Order ticket id
+                </label>
+                <select name="order_ticket_id" class="select" id="id_order_ticket_id">
+                    <option value="" selected>---------</option>
+
+                    {% for tickets in available_ticket %}
+                    <option value="{{tickets.id}}">{{tickets}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="div_id_issued_quantity" class="ctrlHolder">
+                <label for="id_issued_quantity">
+                    Issued quantity
+                </label>
+                <input type="number" name="issued_quantity" value="0" min="0" class="numberinput"
+                    id="id_issued_quantity">
+            </div>
+        </table>
+        <input type="submit" class="btn btn-primary mt-2" value="Save">
+    </form>
 </div>
 
-
 {% endblock %}
-
-
-

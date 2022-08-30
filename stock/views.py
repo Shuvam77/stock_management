@@ -9,7 +9,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
-
 from django.http import HttpResponse, JsonResponse
 import csv
 
@@ -176,6 +175,15 @@ class IssueItem(SuccessMessageMixin, CreateView):
     template_name = 'issue/issue_item.html'
     success_message = 'Success: Item was issued successfully!.'
     success_url= reverse_lazy('stock:list_items')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["available_ticket"] = OrderTicket.objects.filter(Q(status = "PE") | Q(status = "PR"))
+        context["department_name"] = Department.objects.all()
+        context["issue_item"] = Stock.objects.filter(~Q(quantity = 0))
+
+
+        return context
 
     def form_valid(self, form):
         form.instance.issued_by = self.request.user
