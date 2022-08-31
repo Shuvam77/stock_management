@@ -105,7 +105,7 @@ class OrderTicket(models.Model):
         verbose_name_plural = ("OrderTickets")
 
     def __str__(self):
-        return f"{self.order_item}"
+        return f"T: {self.quantity} {self.order_item } ordered by {self.dep_id.name}"
 
 
 class Issue(models.Model):

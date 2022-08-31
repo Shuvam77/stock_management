@@ -1,0 +1,47 @@
+{% extends '../base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container mt-3" style="width: 75% font-size: 14px">
+    <h1>Issue Item</h1>
+    <form action="" class="card p-3 mt-5" method="post">
+        {% csrf_token %}
+
+            <div id="div_id_issued_item" class="ctrlHolder">
+                <label for="id_issued_item" class="requiredField">
+                    Issued item<span class="asteriskField">*</span>
+                </label>
+                <select name="issued_item" class="select" required id="id_issued_item">
+                    <option value="{{product.order_item.id}}" selected>{{product.order_item.item_name}}</option>
+                </select>
+            </div>
+            <div id="div_id_issued_to" class="ctrlHolder">
+                <label for="id_issued_to" class="requiredField">
+                    Issued to<span class="asteriskField">*</span>
+                </label>
+                <select name="issued_to" class="select" required id="id_issued_to">
+                    <option value="{{product.dep_id.id}}" selected>{{product.dep_id.name}}</option>
+                </select>
+            </div>
+            <div id="div_id_order_ticket_id" class="ctrlHolder">
+                <label for="id_order_ticket_id">
+                    Order ticket id
+                </label>
+                <select name="order_ticket_id" class="select" id="id_order_ticket_id">
+                    <option value="{{product.id}}" selected>{{product}}</option>
+                </select>
+            </div>
+            <div id="div_id_issued_quantity" class="ctrlHolder">
+                <label for="id_issued_quantity">
+                    Issued quantity
+                </label>
+                <input type="number" name="issued_quantity" value="{{product.quantity}}" min="1" class="numberinput"
+                    id="id_issued_quantity" readonly>
+            </div>
+        </table>
+        <input type="submit" class="btn btn-primary mt-2" value="Save">
+    </form>
+</div>
+
+{% endblock %}

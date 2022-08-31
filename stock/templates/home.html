@@ -38,8 +38,19 @@
                     <td>{{ item.remarks }}</td>
                     <td>{{ item.status }}</td>
                     {% if user.is_superuser %}
-                    <td><a href="{% url 'stock:edit_ticket_status' item.id %}">Edit</a></td>
-                    <td><a href="{% url 'stock:issue_item' %}">Issue Item</a></td>
+                        {% if item.status == "AP" %}
+                            <td>Issued</td>
+                        {% else %}
+                            <td><a href="{% url 'stock:edit_ticket_status' item.id %}">Edit</a></td>
+                        {% endif %}
+                        {% if item.status == "AP" %}
+                            <td>Issued</td>
+                        {% elif item.status == "RE" %}
+                            <td>Rejected</td>
+                        {% else %}
+                            <td><a href="{% url 'stock:issue_ticket_item' item.id%}">Issue Item</a></td>
+                        {% endif %}
+
                     {% endif %}
 
                 </tr>
