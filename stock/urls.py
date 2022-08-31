@@ -30,7 +30,7 @@ urlpatterns = [
     path("delete_department/<int:pk>/", views.DeleteDepartment.as_view(), name="delete_department"),
 
 
-    path("issue_item/", views.IssueItem.as_view(), name="issue_item"),
+    path("issue_item/<int:pk>", views.IssueItem.as_view(), name="issue_item"),
     path("issue_list/", views.IssueList.as_view(), name="issue_list"),
 
 

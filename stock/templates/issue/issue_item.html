@@ -27,7 +27,7 @@
                     Issued item<span class="asteriskField">*</span>
                 </label>
                 <select name="issued_item" class="select" required id="id_issued_item">
-                    <option value="" selected>---------</option>
+                    <option value="{{product.id}}" selected>{{product.item_name}}</option>
 
                     {% for item in issue_item %}
                     <option value="{{item.id}}">{{item}}</option>

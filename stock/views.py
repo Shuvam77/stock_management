@@ -175,19 +175,21 @@ class IssueItem(SuccessMessageMixin, CreateView):
     model = Issue
     template_name = 'issue/issue_item.html'
     success_message = 'Success: Item was issued successfully!.'
+    pk_url_kwarg = 'pk'
     success_url= reverse_lazy('stock:list_items')
+
+    def form_valid(self, form):
+        form.instance.issued_by = self.request.user
+        # item = Stock.objects.get(pk = self.kwargs['pk'])
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["available_ticket"] = OrderTicket.objects.filter(Q(status = "PE") | Q(status = "PR"))
         context["department_name"] = Department.objects.all()
         context["issue_item"] = Stock.objects.filter(~Q(quantity = 0))
-
+        context["product"] = Stock.objects.get(pk = self.kwargs['pk'])
         return context
-
-    def form_valid(self, form):
-        form.instance.issued_by = self.request.user
-        return super().form_valid(form)
 
 def get_items(request):
     data = json.loads(request.body)
