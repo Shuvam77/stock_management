@@ -38,7 +38,9 @@ urlpatterns = [
 
 
     path("issue_ticket/", views.IssueTicket.as_view(), name="issue_ticket"),
-    path("edit_ticket_status/<int:pk>/", views.EditTicketStatus.as_view(), name="edit_ticket_status")
+    path("edit_ticket_status/<int:pk>/", views.EditTicketStatus.as_view(), name="edit_ticket_status"),
+
+    path("get_items/", views.get_items, name="get_items" )
 
 
 ]

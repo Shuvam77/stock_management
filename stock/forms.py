@@ -72,12 +72,27 @@ class IssueTickets(forms.ModelForm):
         model = OrderTicket
         fields = ['category_id', 'dep_id', 'order_item', 'quantity', 'remarks']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['order_item'].queryset = Stock.objects.none()
+
+        if 'category_id' in self.data:
+            try:
+                cat = int(self.data.get('category_id'))
+                self.fields['order_item'].queryset = Stock.objects.filter(category_id=cat)
+            except(ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['order_item'].queryset = self.instance.order_item.ord_item_name.order_by('item_name')
+
 
 class EditTicketStatus(forms.ModelForm):
 
     class Meta:
         model = OrderTicket
         fields = ['dep_id', 'order_item', 'quantity', 'remarks', 'status']
+    
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,4 +100,4 @@ class EditTicketStatus(forms.ModelForm):
         # self.fields["dep_id"].widget.attrs["readonly"] = True
         self.fields["order_item"].disabled = True
         self.fields["quantity"].disabled = True
-        self.fields["remarks"].disabled = True
+        # self.fields["remarks"].disabled = True

@@ -39,6 +39,6 @@ def ticket_status_chg(sender, created, instance, **kwargs):
         if not instance.order_ticket_id:
             pass
         else:
-            search_ticket = OrderTicket.objects.get(id=instance.order_ticket_id.id, quantity = instance.issued_quantity, item_id = instance.issued_item.id)
+            search_ticket = OrderTicket.objects.get(id=instance.order_ticket_id.id, quantity = instance.issued_quantity, order_item = instance.issued_item.id)
             search_ticket.status = "AP"
             search_ticket.save()

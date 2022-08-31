@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
@@ -182,12 +183,17 @@ class IssueItem(SuccessMessageMixin, CreateView):
         context["department_name"] = Department.objects.all()
         context["issue_item"] = Stock.objects.filter(~Q(quantity = 0))
 
-
         return context
 
     def form_valid(self, form):
         form.instance.issued_by = self.request.user
         return super().form_valid(form)
+
+def get_items(request):
+    data = json.loads(request.body)
+    cat_id = data["id"]
+    item_list = Stock.objects.filter(category = cat_id)
+    return JsonResponse(list(item_list.values("id", "item_name")), safe=False)
 
 class IssueList(ListView):
     model = Issue
