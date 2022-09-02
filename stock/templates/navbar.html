@@ -29,6 +29,11 @@
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Category</a>
         </li>
         {% endif %}
+        {% if user.is_authenticated %}
+        <li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
+        {% else %}
+        <li><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+        {% endif %}
       </ul>
       <form class="form-inline mt-2 mt-md-0" action="{% url 'stock:search_result' %}">
         <input class="form-control mr-sm-2" name="category" type="text" placeholder="Category" aria-label="Search">
