@@ -5,7 +5,10 @@
 <div class="">
     <h1>This is a Heading</h1>
     <p>{{something}}</p>
+    {% if request.user.is_superuser %}
     <a href="{% url 'stock:add_item' %}">Add New</a>
+    {% endif %}
+    
     <a href="{% url 'stock:issue_ticket' %}">Issue Ticket</a>
 </div>
 <div>

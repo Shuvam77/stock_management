@@ -1,6 +1,5 @@
 {% extends '../base.html' %}
 {% load static %}
-
 {% block content %}
 
 
@@ -10,7 +9,7 @@
     {% if messages %}
     {% for message in messages %}
 
-    <div id="position-fixed top-0 end-0 p-3" class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
 
         <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
             <div class="alert-header">
@@ -21,48 +20,43 @@
             </div>
         </div>
     </div>
-    
+
     {% endfor %}
     {% endif %}
     <!--Toast Message-->
 
-    <div class="header">{{title}}</div>
-    {% if not issues %}
-
-    <p>No issue here.</p>
-
+    <div class="header">Employees!</div>
+    {% if not employees %}
+        <p>No Employees</p> 
     {% else %}
 
+    <hr>
+
     <div class="display_table">
-        <table class="table table-hover">
+        <table class="table table-hover" id="data-table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Issued By</th>
-                    <th scope="col">Issued Item</th>
-                    <th scope="col">Issued Quantity</th>
-                    <th scope="col">Issued To</th>
-
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in issues %}
+                {% for item in employees %}
                 <tr>
                     <th scope="row">{{item.id}}</th>
-                    <td>{{ item.issued_by }}</td>
-                    <td>{{ item.issued_item }}</td>
-                    <td>{{ item.issued_quantity }}</td>
-                    <td>{{ item.issued_to }}</td>
+                    <td>{{ item.username }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.role }}</td>
+                    <a href="{% url 'user:user_update' item.id %}">Update</a>
+
+
+                    <td><a class="btn btn-primary" href="{% url 'user:user_update' item.id %}">Update</a></td>
                 </tr>
                 {% endfor %}
 
             </tbody>
-            <tfoot>
-                {% comment %} <tr>
-                    <td><a class="export-csv btn btn-info" type="button" href="{% url 'stock:export_csv'%}">Export</a>
-                    </td>
-                </tr> {% endcomment %}
-            </tfoot>
         </table>
     </div>
 
@@ -113,9 +107,9 @@
     </nav>
 
     {% endif %}
-    </div>
-    {% endblock %}
 
-    {% comment %} {% block script %}
-    <script src="{% static 'js/stock.js' %}"></script>
-    {% endblock  %} {% endcomment %}
+</div>
+
+{% endblock %}
+
+

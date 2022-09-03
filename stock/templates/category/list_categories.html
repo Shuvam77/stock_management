@@ -10,73 +10,72 @@
 
     <!--Toast Message-->
     {% if messages %}
-    {% for message in messages %}
+        {% for message in messages %}
 
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
 
-        <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
-            <div class="alert-header">
-                <strong class="me-auto">Notification</strong>
+                <div class="alert alert-warning" alert="{{message.tags}}" aria-live="assertive" aria-atomic="true" role="alert">
+                    <div class="alert-header">
+                        <strong class="me-auto">Notification</strong>
+                    </div>
+                    <div class="alert-body">
+                        {{message|safe}}
+                    </div>
+                </div>
             </div>
-            <div class="alert-body">
-                {{message|safe}}
-            </div>
-        </div>
-    </div>
 
-    {% endfor %}
+        {% endfor %}
     {% endif %}
     <!--Toast Message-->
 
     <div class="header">Categories!</div>
     {% if not categories %}
 
-    <p>No category added. <button id="create-category" class="btn btn-primary" type="button" name="button">Add some category!</button></p>
+        <p>No category added. <button id="create-category" class="btn btn-primary" type="button" name="button">Add some category!</button></p>
 
     {% else %}
-    <div class="display_button">
-        <p><b>Add New:</b></p>
-        <button id="create-category" class="btn btn-primary" type="button" name="button">Create Category</button>
-    </div>
-
-    <hr>
-
-    <div class="display_table">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in categories %}
-                <tr>
-                    <th scope="row">{{item.id}}</th>
-                    <td>{{ item.name }}</td>
-                    <td><button id="update-category" class="update-category btn btn-primary" type="button"
-                            name="update-button"
-                            data-form-url="{% url 'stock:update_category' item.id %}">Update</button></td>
-                    <td><button id="delete-category" class="delete-category btn btn-danger" type="button"
-                            name="delete-button"
-                            data-form-url="{% url 'stock:delete_category' item.id %}">Delete</button></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content"></div>
+        <div class="display_button">
+            <p><b>Add New:</b></p>
+            <button id="create-category" class="btn btn-primary" type="button" name="button">Create Category</button>
         </div>
-    </div>
+
+        <hr>
+
+        <div class="display_table">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in categories %}
+                    <tr>
+                        <th scope="row">{{item.id}}</th>
+                        <td>{{ item.name }}</td>
+                        <td><button id="update-category" class="update-category btn btn-primary" type="button"
+                                name="update-button"
+                                data-form-url="{% url 'stock:update_category' item.id %}">Update</button></td>
+                        <td><button id="delete-category" class="delete-category btn btn-danger" type="button"
+                                name="delete-button"
+                                data-form-url="{% url 'stock:delete_category' item.id %}">Delete</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
     {% endif %}
 
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content"></div>
+            </div>
+        </div>
 </div>
 {% endblock %}
 
@@ -106,6 +105,7 @@
             formURL: "{% url 'stock:create_category' %}"
         });
     });
+
 </script>
 {% endblock %}
 

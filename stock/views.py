@@ -8,23 +8,30 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 import csv
 
 from stock.models import Category, Department, Issue, OrderTicket, Stock, DepartmentItem
 # Create your views here.
 
 
+@login_required
 def home(request):
     something = "Page working!"
-    order_tickets = OrderTicket.objects.all()
+    if request.user.is_superuser:
+        order_tickets = OrderTicket.objects.all()
+    else:
+        order_tickets = OrderTicket.objects.filter(dep_id = request.user.role)
+
     context = {'items':order_tickets, 'something': something}
     return render(request, "home.html", context)
 
 
-class ListItem(ListView):
+class ListItem(LoginRequiredMixin, ListView):
     model = Stock
     paginate_by= 10
     context_object_name = 'stock_list'
@@ -37,19 +44,15 @@ class ListItem(ListView):
         return context
 
 
-class AddItem(SuccessMessageMixin, CreateView):
+class AddItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = StockForm
     model = Stock
     template_name = 'stock/add_item.html'
     success_message = 'Success: Item was added.'
     success_url= reverse_lazy('stock:list_items')
 
-    def form_valid(self, form):
-        form.instance.received_by = self.request.user
-        return super().form_valid(form)
 
-
-class UpdateItem(SuccessMessageMixin, UpdateView):
+class UpdateItem(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = StockForm
     model= Stock
     template_name = 'stock/update_item.html'
@@ -57,24 +60,28 @@ class UpdateItem(SuccessMessageMixin, UpdateView):
     success_url= reverse_lazy('stock:list_items')
 
 
-class DeleteItem(SuccessMessageMixin, DeleteView):
+class DeleteItem(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model= Stock
     template_name= 'stock/stock_delete_confirm.html'
     success_message = 'Success: Item was deleted.'
     success_url= reverse_lazy('stock:list_items')
 
 
-class DetailItem(DetailView):
+class DetailItem(LoginRequiredMixin, DetailView):
     model= Stock
     template_name= 'stock/stock_detail.html'
     context_object_name = 'item'
 
 
-class SearchItems(ListView):
+class SearchItems(LoginRequiredMixin, ListView):
     form_class = StockSearchForm
     model = Stock
     template_name = 'stock/list_items.html'
     context_object_name = 'stock_list'
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     if not request.user.is_superuser:
+    #         return HttpResponseRedirect('/')
 
     def get_queryset(self):
         query1 = self.request.GET.get('category')
@@ -86,25 +93,29 @@ class SearchItems(ListView):
         return queryset
 
 
+@login_required
 def ExportCSV(request):
-    response = HttpResponse(content_type = 'text/csv')
-    response['Content-Disposition'] = 'attachment; filename="List_of_stock.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['CATEGORY', 'ITEM NAME', 'QUANTITY'])
-    instance = Stock.objects.all()
-    for stock in instance:
-        writer.writerow([stock.category, stock.item_name, stock.quantity])
-    return response
+    if not request.user.is_superuser:
+        return HttpResponseRedirect('/')
+    else:
+        response = HttpResponse(content_type = 'text/csv')
+        response['Content-Disposition'] = 'attachment; filename="List_of_stock.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['CATEGORY', 'ITEM NAME', 'QUANTITY'])
+        instance = Stock.objects.all()
+        for stock in instance:
+            writer.writerow([stock.category, stock.item_name, stock.quantity])
+        return response
 
 
-class ListCategory(ListView):
+class ListCategory(LoginRequiredMixin, ListView):
     model = Category
     paginate_by= 10
     context_object_name = 'categories'
     template_name = 'category/list_categories.html'
 
 
-class CreateCategory(BSModalCreateView):
+class CreateCategory(LoginRequiredMixin, BSModalCreateView):
     form_class = CategoryForm
     model = Category
     template_name = 'category/create_category.html'
@@ -112,7 +123,7 @@ class CreateCategory(BSModalCreateView):
     success_url= reverse_lazy('stock:list_category')
 
 
-class UpdateCategory(BSModalUpdateView):
+class UpdateCategory(LoginRequiredMixin, BSModalUpdateView):
     form_class = CategoryForm
     model = Category
     template_name = 'category/update_category.html'
@@ -120,21 +131,21 @@ class UpdateCategory(BSModalUpdateView):
     success_url= reverse_lazy('stock:list_category')
 
 
-class DeleteCategory(BSModalDeleteView):
+class DeleteCategory(LoginRequiredMixin, BSModalDeleteView):
     model = Category
     template_name = 'category/delete_category.html'
     success_message = 'Success: Category was deleted.'
     success_url= reverse_lazy('stock:list_category')
 
 
-class ListDepartment(ListView):
+class ListDepartment(LoginRequiredMixin, ListView):
     model = Department
     paginate_by= 10
     context_object_name = 'departments'
     template_name = 'department/list_departments.html'
 
 
-class CreateDepartment(BSModalCreateView):
+class CreateDepartment(LoginRequiredMixin, BSModalCreateView):
     form_class = DepartmentForm
     model = Department
     template_name = 'department/add_department.html'
@@ -155,7 +166,7 @@ class CreateDepartment(BSModalCreateView):
 #     return render(request, 'add_department.html')
 
 
-class UpdateDepartment(BSModalUpdateView):
+class UpdateDepartment(LoginRequiredMixin, BSModalUpdateView):
     form_class = DepartmentForm
     model = Department
     template_name = 'department/update_department.html'
@@ -163,14 +174,14 @@ class UpdateDepartment(BSModalUpdateView):
     success_url= reverse_lazy('stock:list_departments')
 
 
-class DeleteDepartment(BSModalDeleteView):
+class DeleteDepartment(LoginRequiredMixin, BSModalDeleteView):
     model = Department
     template_name = 'department/delete_department.html'
     success_message = 'Success: Department was deleted.'
     success_url= reverse_lazy('stock:list_departments')
 
 
-class IssueItem(SuccessMessageMixin, CreateView):
+class IssueItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = IssueItems
     model = Issue
     template_name = 'issue/issue_item.html'
@@ -191,38 +202,54 @@ class IssueItem(SuccessMessageMixin, CreateView):
         context["product"] = Stock.objects.get(pk = self.kwargs['pk'])
         return context
 
+
+@login_required
 def get_items(request):
     data = json.loads(request.body)
     cat_id = data["id"]
     item_list = Stock.objects.filter(category = cat_id)
     return JsonResponse(list(item_list.values("id", "item_name")), safe=False)
 
-class IssueList(ListView):
+
+class IssueList(LoginRequiredMixin, ListView):
     model = Issue
     paginate_by= 10
     context_object_name = 'issues'
     template_name = 'issue/issue_list.html'
 
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            issue = Issue.objects.all()
+            return issue
+        else:
+            issue = Issue.objects.filter(issued_to=self.request.user.role)
+            return issue
 
-class DepartmentItemList(ListView):
+
+class DepartmentItemList(LoginRequiredMixin, ListView):
     model = DepartmentItem
     paginate_by= 10
     context_object_name = 'items'
     template_name = 'departmentItem/department_items_list.html'
 
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            issue = DepartmentItem.objects.all()
+            return issue
+        else:
+            issue = DepartmentItem.objects.filter(dep_id=self.request.user.role)
+            return issue
 
-class IssueTicket(CreateView):
+
+class IssueTicket(LoginRequiredMixin, CreateView):
     form_class = IssueTickets
     model = OrderTicket
     template_name = 'department/issue_ticket.html'
     success_message = 'Success: Item was ordered successfully!.'
     success_url= reverse_lazy('stock:home')
 
-    def form_valid(self, form):
-        form.instance.issued_by = self.request.user
-        return super().form_valid(form)
 
-class EditTicketStatus(PermissionRequiredMixin, UpdateView):
+class EditTicketStatus(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = EditTicketStatus
     model = OrderTicket
     permission_required = 'OrderTicket.change_OrderTicket'
@@ -230,13 +257,14 @@ class EditTicketStatus(PermissionRequiredMixin, UpdateView):
     success_url= reverse_lazy('stock:home')
 
 
-class IssueTicketItem(SuccessMessageMixin, CreateView):
+class IssueTicketItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = IssueItems
     model = Issue
     template_name = 'issue/issue_ticket_item.html'
     success_message = 'Success: Item was issued successfully!.'
     pk_url_kwarg = 'pk'
     success_url= reverse_lazy('stock:home')
+
 
     def form_valid(self, form):
         form.instance.issued_by = self.request.user

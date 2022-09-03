@@ -8,10 +8,13 @@
         {% comment %} <li class="nav-item active">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li> {% endcomment %}
+
+        {% if user.is_authenticated %}
+
+        {% if user.is_superuser %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:list_items' %}">List</a>
         </li>
-        {% if user.is_superuser %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:list_category' %}" >Category</a>
         </li>
@@ -19,21 +22,27 @@
           <a class="nav-link" href="{% url 'stock:list_departments' %}" >Department</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'user:user_list' %}">User List</a>
+        </li>
+        {% comment %} {% else %}
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Category</a>
+        </li> {% endcomment %}
+        {% endif %}
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:issue_list' %}" >Issues</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'stock:dep_item_list' %}" >Department Item</a>
         </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Category</a>
-        </li>
-        {% endif %}
-        {% if user.is_authenticated %}
         <li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li>
         {% else %}
         <li><a class="nav-link" href="{% url 'login' %}">Log In</a></li>
+        <li><a class="nav-link" href="{% url 'user:signup' %}">Signup</a></li>
         {% endif %}
+
+
+
       </ul>
       <form class="form-inline mt-2 mt-md-0" action="{% url 'stock:search_result' %}">
         <input class="form-control mr-sm-2" name="category" type="text" placeholder="Category" aria-label="Search">
