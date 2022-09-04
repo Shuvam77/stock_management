@@ -44,32 +44,37 @@ class ListItem(LoginRequiredMixin, ListView):
         return context
 
 
-class AddItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class AddItem(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = StockForm
     model = Stock
     template_name = 'stock/add_item.html'
     success_message = 'Success: Item was added.'
     success_url= reverse_lazy('stock:list_items')
+    permission_required = 'Stock.add_Stock'
 
 
-class UpdateItem(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+
+class UpdateItem(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = StockForm
     model= Stock
     template_name = 'stock/update_item.html'
+    permission_required = 'Stock.update_Stock'
     success_message = 'Success: Item was updated.'
     success_url= reverse_lazy('stock:list_items')
 
 
-class DeleteItem(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class DeleteItem(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, DeleteView):
     model= Stock
     template_name= 'stock/stock_delete_confirm.html'
+    permission_required = 'Stock.delete_Stock'
     success_message = 'Success: Item was deleted.'
     success_url= reverse_lazy('stock:list_items')
 
 
-class DetailItem(LoginRequiredMixin, DetailView):
+class DetailItem(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model= Stock
     template_name= 'stock/stock_detail.html'
+    permission_required = 'Stock.view_Stock'
     context_object_name = 'item'
 
 
@@ -108,46 +113,52 @@ def ExportCSV(request):
         return response
 
 
-class ListCategory(LoginRequiredMixin, ListView):
+class ListCategory(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Category
     paginate_by= 10
+    permission_required = 'Stock.view_category'
     context_object_name = 'categories'
     template_name = 'category/list_categories.html'
 
 
-class CreateCategory(LoginRequiredMixin, BSModalCreateView):
+class CreateCategory(LoginRequiredMixin, PermissionRequiredMixin, BSModalCreateView):
     form_class = CategoryForm
     model = Category
+    permission_required = 'Stock.add_category'
     template_name = 'category/create_category.html'
     success_message = 'Success: Category was created.'
     success_url= reverse_lazy('stock:list_category')
 
 
-class UpdateCategory(LoginRequiredMixin, BSModalUpdateView):
+class UpdateCategory(LoginRequiredMixin, PermissionRequiredMixin, BSModalUpdateView):
     form_class = CategoryForm
     model = Category
+    permission_required = 'Stock.update_category'
     template_name = 'category/update_category.html'
     success_message = 'Success: Category was updated.'
     success_url= reverse_lazy('stock:list_category')
 
 
-class DeleteCategory(LoginRequiredMixin, BSModalDeleteView):
+class DeleteCategory(LoginRequiredMixin, PermissionRequiredMixin, BSModalDeleteView):
     model = Category
     template_name = 'category/delete_category.html'
+    permission_required = 'Stock.delete_category'
     success_message = 'Success: Category was deleted.'
     success_url= reverse_lazy('stock:list_category')
 
 
-class ListDepartment(LoginRequiredMixin, ListView):
+class ListDepartment(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Department
     paginate_by= 10
+    permission_required = 'Stock.view_department'
     context_object_name = 'departments'
     template_name = 'department/list_departments.html'
 
 
-class CreateDepartment(LoginRequiredMixin, BSModalCreateView):
+class CreateDepartment(LoginRequiredMixin, PermissionRequiredMixin, BSModalCreateView):
     form_class = DepartmentForm
     model = Department
+    permission_required = 'Stock.add_department'
     template_name = 'department/add_department.html'
     success_message = 'Success: Department was created.'
     success_url= reverse_lazy('stock:list_departments')
@@ -166,24 +177,27 @@ class CreateDepartment(LoginRequiredMixin, BSModalCreateView):
 #     return render(request, 'add_department.html')
 
 
-class UpdateDepartment(LoginRequiredMixin, BSModalUpdateView):
+class UpdateDepartment(LoginRequiredMixin, PermissionRequiredMixin, BSModalUpdateView):
     form_class = DepartmentForm
     model = Department
+    permission_required = 'Stock.update_department'
     template_name = 'department/update_department.html'
     success_message = 'Success: Department was updated.'
     success_url= reverse_lazy('stock:list_departments')
 
 
-class DeleteDepartment(LoginRequiredMixin, BSModalDeleteView):
+class DeleteDepartment(LoginRequiredMixin, PermissionRequiredMixin, BSModalDeleteView):
     model = Department
+    permission_required = 'Stock.delete_department'
     template_name = 'department/delete_department.html'
     success_message = 'Success: Department was deleted.'
     success_url= reverse_lazy('stock:list_departments')
 
 
-class IssueItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class IssueItem(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = IssueItems
     model = Issue
+    permission_required = 'Stock.add_issue'
     template_name = 'issue/issue_item.html'
     success_message = 'Success: Item was issued successfully!.'
     pk_url_kwarg = 'pk'
@@ -252,14 +266,15 @@ class IssueTicket(LoginRequiredMixin, CreateView):
 class EditTicketStatus(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     form_class = EditTicketStatus
     model = OrderTicket
-    permission_required = 'OrderTicket.change_OrderTicket'
+    permission_required = 'Stock.change_OrderTicket'
     template_name = 'department/edit_ticket_status.html'
     success_url= reverse_lazy('stock:home')
 
 
-class IssueTicketItem(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class IssueTicketItem(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = IssueItems
     model = Issue
+    permission_required = 'Stock.add_issue'
     template_name = 'issue/issue_ticket_item.html'
     success_message = 'Success: Item was issued successfully!.'
     pk_url_kwarg = 'pk'
