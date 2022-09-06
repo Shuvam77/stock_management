@@ -39,7 +39,7 @@ Propogate your models into database schema
 inv_mang $ docker-compose exec web python manage.py makemigrations
 inv_mang $ docker-compose exec web python manage.py showmigrations
 inv_mang $ docker-compose exec web python manage.py migrate 
-
+```
 
 ###### Create Django Superuser
 For super access in application
